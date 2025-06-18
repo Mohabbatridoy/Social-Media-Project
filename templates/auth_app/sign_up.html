@@ -1,37 +1,36 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block title_block %} {{title}} {% endblock %}
-
 {% block css_block %}
-    <style>
-        .sign_up{
-            width: 450px;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        .log_in{
-            width: 450px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 15px;
-        }
-    </style>
+<style>
+    .sign_up{
+        width: 450px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: rgb(172, 137, 204);
+    }
+    .log_in{
+        width: 450px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+    }
+</style>
 {% endblock %}
-
 {% block content %}
-<center>
-    <div class="sign_up">
-        <h3>Create an account</h3><br>
-        <form method="POST">
-            {% csrf_token %}
-            {{form|crispy}}
-            <button type="submit" style="width: 100%;" class=" btn btn-primary">Sign UP</button>
-        </form>
-    </div>
-    <br>
-    <div class="log_in">
-        <p>already have an account? <a href="#">Log in</a></p>
-    </div>
-</center>
+    <center>
+        <div class="sign_up">
+            <h1 style="color: white;"><b>Create an account</b></h1> <br>
+            <form method="POST" >
+                {% csrf_token %}
+                {{form|crispy}}
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign UP</button>
+            </form>
+        </div>
+        <br>
+        <div class="log_in">
+            <p>already have an account? <a href="{% url 'auth_app:login' %}">Log in</a></p>
+        </div>
+    </center>
 {% endblock %}

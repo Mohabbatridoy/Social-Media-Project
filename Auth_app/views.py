@@ -14,4 +14,4 @@ def sign_up(request):
             form.save()
             registered = True
             pass
-    return render(request, 'auth_app/sign_up.html',context={'form':form, 'registered':registered})
+    return render(request, 'auth_app/sign_up.html',context={'form':form, 'registered':registered, 'title':'signup.instagram'})

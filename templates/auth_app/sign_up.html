@@ -1,12 +1,37 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title_block %} signup.instagram {% endblock %}
+{% block title_block %} {{title}} {% endblock %}
+
+{% block css_block %}
+    <style>
+        .sign_up{
+            width: 450px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .log_in{
+            width: 450px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <div style="padding: 20px;">
+<center>
+    <div class="sign_up">
+        <h3>Create an account</h3><br>
         <form method="POST">
             {% csrf_token %}
             {{form|crispy}}
             <button type="submit" style="width: 100%;" class=" btn btn-primary">Sign UP</button>
         </form>
     </div>
+    <br>
+    <div class="log_in">
+        <p>already have an account? <a href="#">Log in</a></p>
+    </div>
+</center>
 {% endblock %}

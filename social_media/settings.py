@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Auth_app',
+    'app_post',
     'crispy_forms',
     'crispy_bootstrap5',
 ]
@@ -119,7 +120,7 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 MEDIA_ROOT = MEDIA_URL
 MEDIA_URL = '/media/'
 
-LOGIN_URL = '/home/'
+LOGIN_URL = '/account/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

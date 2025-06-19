@@ -22,6 +22,7 @@
     <center>
         <div class="sign_up">
             <h1 style="color: white;"><b>Create an account</b></h1> <br>
+            {% csrf_token %}
             <form method="POST" >
                 {% csrf_token %}
                 {{form|crispy}}

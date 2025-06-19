@@ -1,9 +1,10 @@
-from .forms import CreateNewUser
+from .forms import CreateNewUser , EditProfile
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, HttpResponseRedirect
 from .models import UserProfile
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 #create your views here.
 def sign_up(request):
@@ -30,6 +31,22 @@ def Log_in(request):
             user = authenticate(username=username,password=password)
             if user is not None:
                 login(request,user)
-                pass
+                return HttpResponseRedirect(reverse('app_post:home'))
 
     return render(request, 'auth_app/log_in.html', context={'title':'Login', 'form':form})
+
+@login_required
+def EditProfile(request):
+    current_user = UserProfile.objects.get(user=request.user)
+    form = EditProfile(instance=current_user)
+    if request.metho=="POST":
+        form = EditProfile(request.POST,request.FILES, instance=current_user)
+        if form.is_valid():
+            form.save(commit=True)
+
+    return render(request, 'auth_app/profile.html', context={'form':form, 'title':'edit Profile.social'})
+
+@login_required
+def LogOut(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('auth_app:login'))

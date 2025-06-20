@@ -31,10 +31,13 @@
                     <a class="nav-link" href="{% url 'auth_app:edit_profile' %}">Edit Profile</a>
                 </li>
             </ul>
-            <form class="d-flex ms-auto" role="search">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            <div class="d-flex ms-auto">
+                {% if user.user_profile.profile_pic %}
+                <a href="#"><img src="/media/{{user.user_profile.profile_pic}}" alt="User Image" width="45px" height="45px" class="rounded-circle"></a>
+                {% else %}
+                <a href="#"><img src="/media/avatar.png" width="45px" height="45px" class="rounded-circle"></a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 

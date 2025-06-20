@@ -44,7 +44,7 @@ def Edit_Profile(request):
         if form.is_valid():
             form.save(commit=True)
             form = EditProfile(instance=current_user)
-            return HttpResponseRedirect(reverse('post_app:home'))
+            return HttpResponseRedirect(reverse('auth_app:profile'))
 
     return render(request, 'auth_app/profile.html', context={'form':form, 'title':'edit Profile.social'})
 
@@ -52,3 +52,8 @@ def Edit_Profile(request):
 def LogOut(request):
     logout(request)
     return HttpResponseRedirect(reverse('auth_app:login'))
+
+@login_required
+def Profile(request):
+
+    return render(request, 'auth_app/user.html', context={'title':'Profile'})

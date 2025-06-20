@@ -33,9 +33,9 @@
             </ul>
             <div class="d-flex ms-auto">
                 {% if user.user_profile.profile_pic %}
-                <a href="#"><img src="/media/{{user.user_profile.profile_pic}}" alt="User Image" width="45px" height="45px" class="rounded-circle"></a>
+                <a href="{% url 'auth_app:profile' %}"><img src="/media/{{user.user_profile.profile_pic}}" alt="User Image" width="45px" height="45px" class="rounded-circle"></a>
                 {% else %}
-                <a href="#"><img src="/media/avatar.png" width="45px" height="45px" class="rounded-circle"></a>
+                <a href="{% url 'auth_app:profile' %}"><img src="/media/avatar.png" width="45px" height="45px" class="rounded-circle"></a>
                 {% endif %}
             </div>
         </div>

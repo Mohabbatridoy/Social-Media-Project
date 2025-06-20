@@ -36,13 +36,15 @@ def Log_in(request):
     return render(request, 'auth_app/log_in.html', context={'title':'Login', 'form':form})
 
 @login_required
-def EditProfile(request):
+def Edit_Profile(request):
     current_user = UserProfile.objects.get(user=request.user)
     form = EditProfile(instance=current_user)
-    if request.metho=="POST":
+    if request.method=="POST":
         form = EditProfile(request.POST,request.FILES, instance=current_user)
         if form.is_valid():
             form.save(commit=True)
+            form = EditProfile(instance=current_user)
+            return HttpResponseRedirect(reverse('post_app:home'))
 
     return render(request, 'auth_app/profile.html', context={'form':form, 'title':'edit Profile.social'})
 

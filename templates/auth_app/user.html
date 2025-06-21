@@ -1,24 +1,59 @@
 {% extends 'navbar.html' %}
+{% load crispy_forms_tags %}
 {% block title_block %} {{user.user_profile.full_name}} (@{{user.username}}) {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-4">
-            {% if user.user_profile.profile_pic %}
-                <img src="/media/{{user.user_profile.profile_pic}}" alt="User Image" width="250px" height="250px" class="rounded-circle">
-            {% else %}
-                <img src="/media/avatar.png" width="250px" height="250px" class="rounded-circle">
-            {% endif %}
-        </div>
-        <div class="col-sm-8">
-            <h3>{{user.username}} &nbsp; <a href="{% url 'auth_app:edit_profile' %}" class="btn btn-primary btn-sm">Edit Profile</a></h3>
-            <br>
-            <h4>{{user.post.count}} posts &nbsp; &nbsp; {{user.following.count}} followers &nbsp; &nbsp; {{user.follower.count}} following</h4>
-            <br>
-            <h4>{{user.user_profile.full_name}}</h4>
-            <h5>{{user.user_profile.description|linebreaks}}</h5>
-        </div>
-        <hr>
+<div class="row">
+    <div class="col-sm-4">
+        {% if user.user_profile.profile_pic %}
+        <img src="/media/{{user.user_profile.profile_pic}}" alt="User Image" width="250px" height="250px"
+            class="rounded-circle">
+        {% else %}
+        <img src="/media/avatar.png" width="250px" height="250px" class="rounded-circle">
+        {% endif %}
     </div>
-    
+    <div class="col-sm-8">
+        <h3>{{user.username}} &nbsp; <a href="{% url 'auth_app:edit_profile' %}" class="btn btn-primary btn-sm">Edit
+                Profile</a></h3>
+        <br>
+        <h4>{{user.Post.count}} posts &nbsp; &nbsp; {{user.following.count}} followers &nbsp; &nbsp;
+            {{user.follower.count}} following</h4>
+        <br>
+        <h4>{{user.user_profile.full_name}}</h4>
+        <h5>{{user.user_profile.description|linebreaks}}</h5>
+    </div>
+</div>
+<hr>
+<div class="container mt-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+        Add New Post
+    </button>
+</div>
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Upload Image to Post</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form|crispy}}
+            <button type="submit" class="btn btn-primary btn-sm">Post</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endblock %}

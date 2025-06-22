@@ -2,6 +2,22 @@
 {% load crispy_forms_tags %}
 {% block title_block %} {{user.user_profile.full_name}} (@{{user.username}}) {% endblock %}
 
+{% block css_block %}
+<style>
+    .crop {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .crop img {
+        width: 400px;
+        height: 300px;
+        margin: -75px 0px 0 -100px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-4">
@@ -26,34 +42,42 @@
 <hr>
 <div class="container mt-3">
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-        Add New Post
+        Add Post
     </button>
 </div>
 <div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Upload Image to Post</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Upload a Image to Post</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-      <!-- Modal body -->
-      <div class="modal-body">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form|crispy}}
-            <button type="submit" class="btn btn-primary btn-sm">Post</button>
-        </form>
-      </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button type="submit" class="btn btn-primary btn-sm">POST</button>
+                </form>
+            </div>
 
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-      </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
 
+        </div>
     </div>
-  </div>
+</div>
+<br>
+<div class="row" style="padding: 30px;">
+    {% for post in user.Post.all %}
+    <div class="crop">
+        <img src="/media/{{post.image}}" title="{{post.caption}}">
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

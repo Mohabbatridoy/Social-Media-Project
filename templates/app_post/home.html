@@ -3,4 +3,25 @@
 
 {% block content %}
 <h2>this is homepage</h2>
+{% if search %}
+{% for i in result %}
+<div class="row">
+    <div class="col-sm-2">
+        {% if i.user_profile.profile_pic %}
+        <img src="/media/{{i.user_profile.profile_pic}}" width="60px" height="60px" class="rounded-circle">
+        {% else %}
+        <img src="/media/avatar.png" width="60px" height="60px"
+        class="rounded-circle">
+        {% endif %}
+    </div>
+    <div class="col-sm-10">
+        <h6>@{{i.username}}</h6>
+        <h6>{{i.user_profile.full_name}}</h6>
+    </div>
+</div>
+<br>
+{% endfor %}
+{% else %}
+
+{% endif %}
 {% endblock %}

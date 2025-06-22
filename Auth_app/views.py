@@ -6,6 +6,7 @@ from .models import UserProfile
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from app_post.forms import PostForm
+from django.contrib.auth.models import User
 
 #create your views here.
 def sign_up(request):
@@ -65,3 +66,11 @@ def Profile(request):
             post.save()
             return HttpResponseRedirect(reverse('home'))
     return render(request, 'auth_app/user.html', context={'title':'Profile', 'form':form})
+
+
+@login_required
+def user(request, username):
+    user = User.objects.get(username=username)
+    if user == request.user:
+        return HttpResponseRedirect(reverse('auth_app:profile'))
+    return render(request, 'auth_app/user_other.html', context={'user':user})

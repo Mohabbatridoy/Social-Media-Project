@@ -9,5 +9,6 @@ urlpatterns = [
     path('edit-profile/', views.Edit_Profile, name='edit_profile'),
     path('logout/', views.LogOut, name="logout"),
     path('profile/', views.Profile, name="profile"),
+    path('user/<username>', views.user, name="user"),
     
 ]

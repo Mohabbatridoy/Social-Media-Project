@@ -15,7 +15,7 @@
         {% endif %}
     </div>
     <div class="col-sm-10">
-        <h6>@{{i.username}}</h6>
+        <a href="{% url 'auth_app:user' username=i.username %}"><h6>@{{i.username}}</h6></a>
         <h6>{{i.user_profile.full_name}}</h6>
     </div>
 </div>

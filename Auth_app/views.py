@@ -2,7 +2,7 @@ from .forms import CreateNewUser , EditProfile
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, HttpResponseRedirect
-from .models import UserProfile
+from .models import UserProfile, Follow
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from app_post.forms import PostForm
@@ -67,10 +67,28 @@ def Profile(request):
             return HttpResponseRedirect(reverse('home'))
     return render(request, 'auth_app/user.html', context={'title':'Profile', 'form':form})
 
-
 @login_required
 def user(request, username):
-    user = User.objects.get(username=username)
-    if user == request.user:
+    user_other = User.objects.get(username=username)
+    already_followed = Follow.objects.filter(follower=request.user, following=user_other)
+    if user_other==request.user:
         return HttpResponseRedirect(reverse('auth_app:profile'))
-    return render(request, 'auth_app/user_other.html', context={'user':user})
+    return render(request, 'auth_app/user_other.html', context={'user_other':user_other, 'already_followed':already_followed})
+
+
+@login_required
+def follow(request, username):
+    following_user = User.objects.get(username=username)
+    follower_user = request.user
+    already_followed = Follow.objects.filter(follower=follower_user, following=following_user)
+    if not already_followed:
+        followed_user = Follow(follower=follower_user, following=following_user)
+        followed_user.save()
+    return HttpResponseRedirect(reverse('auth_app:user_other', kwargs={'username':username, }))
+
+def unfollow(request, username):
+    following_user = User.objects.get(username=username)
+    follower_user = request.user
+    already_followed = Follow.objects.filter(follower=follower_user, following=following_user)
+    already_followed.delete()
+    return HttpResponseRedirect(reverse('auth_app:user_other', kwargs={'username':username}))

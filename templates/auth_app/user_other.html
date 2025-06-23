@@ -1,6 +1,6 @@
 {% extends 'navbar.html' %}
 {% load crispy_forms_tags %}
-{% block title_block %} {{user.user_profile.full_name}} (@{{user.username}}) {% endblock %}
+{% block title_block %} {{user_other.user_profile.full_name}} (@{{user_other.username}}) {% endblock %}
 
 {% block css_block %}
 <style>
@@ -21,26 +21,32 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-4">
-        {% if user.user_profile.profile_pic %}
-        <img src="/media/{{user.user_profile.profile_pic}}" width="250px" height="250px"
+        {% if user_other.user_profile.profile_pic %}
+        <img src="/media/{{user_other.user_profile.profile_pic}}" width="250px" height="250px"
             class="rounded-circle">
         {% else %}
         <img src="/media/avatar.png" width="250px" height="250px" class="rounded-circle">
         {% endif %}
     </div>
     <div class="col-sm-8">
-        <h4>{{user.username}}</h4>
+        <h4>{{user_other.username}}</h4> 
+        {% if not already_followed %}
+        <a href="{% url 'auth_app:follow' username=user_other.username %}" class="btn btn-primary">Follow</a> 
+        {% else %}
+        <a href="{% url 'auth_app:unfollow' username=user_other.username %}" class="btn btn-primary">Unfollow</a> 
+        {% endif %}
+        
+        <br><br>
+        <h4>{{user_other.Post.count}} posts &nbsp; &nbsp; {{user_other.following.count}} followers &nbsp; &nbsp;
+            {{user_other.follower.count}} following</h4>
         <br>
-        <h4>{{user.Post.count}} posts &nbsp; &nbsp; {{user.following.count}} followers &nbsp; &nbsp;
-            {{user.follower.count}} following</h4>
-        <br>
-        <h4>{{user.user_profile.full_name}}</h4>
-        <h5>{{user.user_profile.description|linebreaks}}</h5>
+        <h4>{{user_other.user_profile.full_name}}</h4>
+        <h5>{{user_other.user_profile.description|linebreaks}}</h5>
     </div>
 </div>
 <hr>
 <div class="row" style="padding: 30px;">
-    {% for post in  user.Post.all %}
+    {% for post in  user_other.Post.all %}
     <div class="crop">
         <img src="/media/{{post.image}}" title="{{post.caption}}">
     </div>

@@ -2,21 +2,20 @@
 {% block title_block %} {{title}} {% endblock %}
 
 {% block content %}
-<h2>this is homepage</h2>
 {% if search %}
-{% for i in result %}
+{% for user in result %}
 <div class="row">
     <div class="col-sm-2">
-        {% if i.user_profile.profile_pic %}
-        <img src="/media/{{i.user_profile.profile_pic}}" width="60px" height="60px" class="rounded-circle">
+        {% if user.user_profile.profile_pic %}
+        <img src="/media/{{user.user_profile.profile_pic}}" width="65px" height="65px" class="rounded-circle">
         {% else %}
-        <img src="/media/avatar.png" width="60px" height="60px"
+        <img src="/media/avatar.png" width="65px" height="65px"
         class="rounded-circle">
         {% endif %}
     </div>
     <div class="col-sm-10">
-        <a href="{% url 'auth_app:user' username=i.username %}"><h6>@{{i.username}}</h6></a>
-        <h6>{{i.user_profile.full_name}}</h6>
+        <a href="{% url 'auth_app:user_other' username=user.username %}"><h6>{{user.username}}</h6></a>
+        <h6>{{user.user_profile.full_name}}</h6>
     </div>
 </div>
 <br>

@@ -3,24 +3,60 @@
 
 {% block content %}
 {% if search %}
-{% for user in result %}
-<div class="row">
-    <div class="col-sm-2">
-        {% if user.user_profile.profile_pic %}
-        <img src="/media/{{user.user_profile.profile_pic}}" width="65px" height="65px" class="rounded-circle">
-        {% else %}
-        <img src="/media/avatar.png" width="65px" height="65px"
-        class="rounded-circle">
-        {% endif %}
-    </div>
-    <div class="col-sm-10">
-        <a href="{% url 'auth_app:user_other' username=user.username %}"><h6>{{user.username}}</h6></a>
-        <h6>{{user.user_profile.full_name}}</h6>
-    </div>
-</div>
-<br>
-{% endfor %}
+    {% for user in result %}
+        <div class="row">
+            <div class="col-sm-2">
+                {% if user.user_profile.profile_pic %}
+                <img src="/media/{{user.user_profile.profile_pic}}" width="65px" height="65px" class="rounded-circle">
+                {% else %}
+                <img src="/media/avatar.png" width="65px" height="65px"
+                class="rounded-circle">
+                {% endif %}
+            </div>
+            <div class="col-sm-10">
+                <a href="{% url 'auth_app:user_other' username=user.username %}"><h6>{{user.username}}</h6></a>
+                <h6>{{user.user_profile.full_name}}</h6>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
 {% else %}
-
+    <div class="row">
+        <div class="col-sm-8">
+                {% for post in posts %}
+                    <div style="border: 1px solid gray;">
+                        <div style="padding: 10px;">
+                            {% if post.author.user_profile.profile_pic %}
+                            <img src="/media/{{post.author.user_profile.profile_pic}}"
+                            alt="User Image" width="40px" height="40px" class="rounded-circle">
+                            {% else %}
+                                <img src="/media/avatar.png" width="40px" height="40px"
+                                class="rounded-circle">
+                            {% endif %}
+                            <a href="{% url 'auth_app:user_other' username=post.author %}">{{post.author}}</a>
+                        </div>
+                        <img src="/media/{{post.image}}" width="100%" alt="">
+                    </div>
+                    <br><br>
+                {% endfor %}
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-4">
+                    {% if user.user_profile.profile_pic %}
+                    <img src="/media/{{user.user_profile.profile_pic}}" width="65px" height="65px" class="rounded-circle">
+                    {% else %}
+                    <img src="/media/avatar.png" width="65px" height="65px"
+                    class="rounded-circle">
+                    {% endif %}
+                </div>
+                <div class="col-sm-8">
+                    {{user.username}}
+                    <br>
+                    {{user.user_profile.full_name}}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endif %}
 {% endblock %}

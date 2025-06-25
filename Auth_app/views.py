@@ -75,7 +75,6 @@ def user(request, username):
         return HttpResponseRedirect(reverse('auth_app:profile'))
     return render(request, 'auth_app/user_other.html', context={'user_other':user_other, 'already_followed':already_followed})
 
-
 @login_required
 def follow(request, username):
     following_user = User.objects.get(username=username)
@@ -84,7 +83,7 @@ def follow(request, username):
     if not already_followed:
         followed_user = Follow(follower=follower_user, following=following_user)
         followed_user.save()
-    return HttpResponseRedirect(reverse('auth_app:user_other', kwargs={'username':username, }))
+    return HttpResponseRedirect(reverse('auth_app:user_other', kwargs={'username':username}))
 
 def unfollow(request, username):
     following_user = User.objects.get(username=username)

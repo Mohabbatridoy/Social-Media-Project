@@ -9,8 +9,7 @@ urlpatterns = [
     path('edit-profile/', views.Edit_Profile, name='edit_profile'),
     path('logout/', views.LogOut, name="logout"),
     path('profile/', views.Profile, name="profile"), 
-    path('user-other/<username>',views.user, name="user_other"),  
+    path('user-other/<username>',views.user, name="user_other"),
     path('follow/<username>', views.follow, name="follow"),
-    path('unfollow/<username>', views.unfollow, name="unfollow"),
-
+    path('unfollow/<username>', views.unfollow, name="unfollow")
 ]

@@ -31,11 +31,10 @@
     <div class="col-sm-8">
         <h4>{{user_other.username}}</h4> 
         {% if not already_followed %}
-        <a href="{% url 'auth_app:follow' username=user_other.username %}" class="btn btn-primary">Follow</a> 
+        <a href="{% url 'auth_app:follow' username=user_other.username %}" class="btn btn-primary">Follow</a>
         {% else %}
-        <a href="{% url 'auth_app:unfollow' username=user_other.username %}" class="btn btn-primary">Unfollow</a> 
+        <a href="{% url 'auth_app:unfollow' username=user_other.username %}" class="btn btn-primary">Unfollow</a>
         {% endif %}
-        
         <br><br>
         <h4>{{user_other.Post.count}} posts &nbsp; &nbsp; {{user_other.following.count}} followers &nbsp; &nbsp;
             {{user_other.follower.count}} following</h4>

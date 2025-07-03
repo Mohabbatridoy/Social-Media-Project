@@ -16,11 +16,13 @@ def home(request):
     liked_post = Like.objects.filter(user=request.user)
     liked_post_list = liked_post.values_list('post', flat=True)
 
+    followed = Follow.objects.filter(follower=request.user)
+
     print(liked_post)
     if request.method == "GET":
         search = request.GET.get('search', '')
         result = User.objects.filter(username__icontains=search)
-    return render(request, 'app_post/home.html', context={'title':'Homepage', 'search':search, 'result':result, 'posts':posts, 'liked_post_list':liked_post_list})
+    return render(request, 'app_post/home.html', context={'title':'Homepage', 'search':search, 'result':result, 'posts':posts, 'liked_post_list':liked_post_list, 'followed':followed})
 
 @login_required
 def Liked(request, pk):

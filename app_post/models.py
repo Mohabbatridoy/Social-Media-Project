@@ -19,3 +19,14 @@ class Like(models.Model):
 
     def __str__(self):
         return '{} : {}'.format(self.user, self.post)
+    
+
+
+class comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="post_comment")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
+    content = models.TextField(blank=True, null=True)
+    comment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} : {}'.format(self.post, self.user)

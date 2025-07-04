@@ -5,7 +5,8 @@ from Auth_app.models import UserProfile
 from django.contrib.auth.models import User
 from Auth_app.models import UserProfile, Follow
 from django.contrib.auth.models import User
-from .models import Post, Like
+from .models import Post, Like, comment
+from .forms import commentForm
 
 # Create your views here.
 
@@ -40,3 +41,10 @@ def Unliked(request, pk):
     already_liked = Like.objects.filter(post=post, user=request.user)
     already_liked.delete()
     return HttpResponseRedirect(reverse('home'))
+
+
+@login_required
+def Comment(request, pk):
+    form = commentForm()
+
+    return render(request, 'app_post/home.html', context={'form':form,})

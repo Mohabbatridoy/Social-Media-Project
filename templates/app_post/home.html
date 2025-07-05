@@ -1,6 +1,6 @@
 {% extends 'navbar.html' %}
 {% block title_block %} {{title}} {% endblock %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 {% if search %}
 {% for user in result %}
@@ -57,13 +57,13 @@
                 {% else %}
                 <a href="{% url 'app_post:liked' pk=post.pk %}"><i class="far fa-heart"
                         style="font-size: 36px;"></i></a>
-                {% endif %} <br>
+                {% endif %} <br> <br>
 
                 <!-- Inside post loop -->
                 <form method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="post_id" value="{{ post.id }}" title="none">
-                    {{ form.as_p }}
+                    {{ form|crispy }}
                     <button type="submit" class="btn btn-primary btn-sm">Comment</button>
                 </form>
 

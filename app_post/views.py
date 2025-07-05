@@ -19,11 +19,32 @@ def home(request):
 
     followed = Follow.objects.filter(follower=request.user)
 
-    print(liked_post)
     if request.method == "GET":
         search = request.GET.get('search', '')
         result = User.objects.filter(username__icontains=search)
-    return render(request, 'app_post/home.html', context={'title':'Homepage', 'search':search, 'result':result, 'posts':posts, 'liked_post_list':liked_post_list, 'followed':followed})
+
+    if request.method == 'POST':
+        form = commentForm(request.POST)
+        post_id = request.POST.get('post_id')
+        post = Post.objects.get(pk=post_id)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.post = post
+            new_comment.user = request.user
+            new_comment.save()
+            return HttpResponseRedirect(reverse('home'))
+    else:
+        form = commentForm()
+
+    return render(request, 'app_post/home.html', context={
+        'title':'Homepage', 
+        'search':search, 
+        'result':result, 
+        'posts':posts, 
+        'liked_post_list':liked_post_list, 
+        'followed':followed,
+        'form':form,
+    })
 
 @login_required
 def Liked(request, pk):
@@ -41,10 +62,3 @@ def Unliked(request, pk):
     already_liked = Like.objects.filter(post=post, user=request.user)
     already_liked.delete()
     return HttpResponseRedirect(reverse('home'))
-
-
-@login_required
-def Comment(request, pk):
-    form = commentForm()
-
-    return render(request, 'app_post/home.html', context={'form':form,})

@@ -3,82 +3,101 @@
 
 {% block content %}
 {% if search %}
-    {% for user in result %}
+{% for user in result %}
+<div class="row">
+    <div class="col-sm-2">
+        {% if user.user_profile.profile_pic %}
+        <img src="/media/{{user.user_profile.profile_pic}}" width="65px" height="65px" class="rounded-circle">
+        {% else %}
+        <img src="/media/avatar.png" width="65px" height="65px" class="rounded-circle">
+        {% endif %}
+    </div>
+    <div class="col-sm-10">
+        <a href="{% url 'auth_app:user_other' username=user.username %}">
+            <h6>{{user.username}}</h6>
+        </a>
+        <h6>{{user.user_profile.full_name}}</h6>
+    </div>
+</div>
+<br>
+{% endfor %}
+{% else %}
+{% if not followed %}
+<center>
+    <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f5f3f3;">
+        <p>You are not Following Anyone. To watch posts you have to follow others. <br> If you want to follow someone,
+            search with letter 'm' or 'r'. Then you will show some users and you can follow them.</p>
+    </div>
+</center>
+{% else %}
+<div class="row">
+    <div class="col-sm-8">
+        {% for post in posts %}
+        <div style="border: 1px solid gray; background-color: #f7f4f4; padding: 20px; border-radius: 15px;">
+            <div style="padding: 10px;">
+                {% if post.author.user_profile.profile_pic %}
+                <a href="{% url 'auth_app:user_other' username=post.author %}"><img
+                        src="/media/{{post.author.user_profile.profile_pic}}" width="40px" height="40px"
+                        class="rounded-circle"></a>
+                {% else %}
+                <a href="{% url 'auth_app:user_other' username=post.author %}"><img src="/media/avatar.png" width="40px"
+                        height="40px" class="rounded-circle"></a>
+                {% endif %} &nbsp;
+                <a href="{% url 'auth_app:user_other' username=post.author %}"
+                    style="text-decoration: none; color: black;">{{post.author.user_profile.full_name}}</a> <br>
+                &nbsp; &nbsp; &nbsp; {{post.upload_date}}
+            </div>
+            <img src="/media/{{post.image}}" width="100%" alt="">
+            <div style="padding: 20px;">
+                {{post.caption}} <br>
+                {{post.liked_post.count}} Likes <br>
+                {% if post.pk in liked_post_list %}
+                <a href="{% url 'app_post:unliked' pk=post.pk %}"><i class="fas fa-heart"
+                        style="font-size: 36px;"></i></a>
+                {% else %}
+                <a href="{% url 'app_post:liked' pk=post.pk %}"><i class="far fa-heart"
+                        style="font-size: 36px;"></i></a>
+                {% endif %} <br>
+
+                <!-- Inside post loop -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ post.id }}" title="none">
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary btn-sm">Comment</button>
+                </form>
+
+                <!-- Show Comments -->
+                {% for cmnt in post.comments.all %}
+                <div style="margin-left: 15px; margin-top: 5px;">
+                    <strong>{{ cmnt.user.username }}</strong>: {{ cmnt.content }} <br>
+                    <small>{{ cmnt.comment_date|date:"d M Y H:i" }}</small>
+                </div><hr>
+                {% empty %}
+                <p style="margin-left: 15px;">No comments yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <br><br>
+        {% endfor %}
+    </div>
+    <div class="col-sm-4">
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-4">
                 {% if user.user_profile.profile_pic %}
                 <img src="/media/{{user.user_profile.profile_pic}}" width="65px" height="65px" class="rounded-circle">
                 {% else %}
-                <img src="/media/avatar.png" width="65px" height="65px"
-                class="rounded-circle">
+                <img src="/media/avatar.png" width="65px" height="65px" class="rounded-circle">
                 {% endif %}
             </div>
-            <div class="col-sm-10">
-                <a href="{% url 'auth_app:user_other' username=user.username %}"><h6>{{user.username}}</h6></a>
-                <h6>{{user.user_profile.full_name}}</h6>
-            </div>
-        </div>
-        <br>
-    {% endfor %}
-{% else %}
-    {% if not followed %}
-        <center>
-            <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f5f3f3;">
-                <p>You are not Following Anyone. To watch posts you have to follow others. <br> If you want to follow someone, search with letter 'm' or 'r'. Then you will show some users and you can follow them.</p>
-            </div>
-        </center>
-    {% else %}
-        <div class="row">
             <div class="col-sm-8">
-                    {% for post in posts %}
-                        <div style="border: 1px solid gray; background-color: #f7f4f4; padding: 20px; border-radius: 15px;">
-                            <div style="padding: 10px;">
-                                {% if post.author.user_profile.profile_pic %}
-                                    <a href="{% url 'auth_app:user_other' username=post.author %}"><img src="/media/{{post.author.user_profile.profile_pic}}" width="40px" height="40px" class="rounded-circle"></a>
-                                {% else %}
-                                    <a href="{% url 'auth_app:user_other' username=post.author %}"><img src="/media/avatar.png" width="40px" height="40px" class="rounded-circle"></a>
-                                {% endif %} &nbsp;
-                                <a href="{% url 'auth_app:user_other' username=post.author %}" style="text-decoration: none; color: black;">{{post.author.user_profile.full_name}}</a> <br>
-                                &nbsp; &nbsp; &nbsp; {{post.upload_date}}
-                            </div>
-                            <img src="/media/{{post.image}}" width="100%" alt="">
-                            <div style="padding: 20px;">
-                                {{post.caption}} <br>
-                                {{post.liked_post.count}} Likes <br>
-                                {% if post.pk in liked_post_list %}
-                                <a href="{% url 'app_post:unliked' pk=post.pk %}"><i class="fas fa-heart" style="font-size: 36px;"></i></a>
-                                {% else %}
-                                <a href="{% url 'app_post:liked' pk=post.pk %}"><i class="far fa-heart" style="font-size: 36px;"></i></a>
-                                {% endif %} <br><br>
-                                <a href="{% url 'app_post:comment' pk=post.pk %}" style="text-decoration: none;">Comment</a>
-                                <form method="POST">
-                                    {% csrf_token %}
-                                    {{form}}
-                                    <button type="submit" class="btn btn-primary btn-sm">comment</button>
-                                </form>
-                            </div>
-                        </div>
-                        <br><br>
-                    {% endfor %}
-            </div>
-            <div class="col-sm-4">
-                <div class="row">
-                    <div class="col-sm-4">
-                        {% if user.user_profile.profile_pic %}
-                        <img src="/media/{{user.user_profile.profile_pic}}" width="65px" height="65px" class="rounded-circle">
-                        {% else %}
-                        <img src="/media/avatar.png" width="65px" height="65px"
-                        class="rounded-circle">
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-8">
-                        {{user.username}}
-                        <br>
-                        {{user.user_profile.full_name}}
-                    </div>
-                </div>
+                {{user.username}}
+                <br>
+                {{user.user_profile.full_name}}
             </div>
         </div>
-    {% endif %}
+    </div>
+</div>
+{% endif %}
 {% endif %}
 {% endblock %}

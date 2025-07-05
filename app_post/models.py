@@ -23,7 +23,7 @@ class Like(models.Model):
 
 
 class comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="post_comment")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
     content = models.TextField(blank=True, null=True)
     comment_date = models.DateTimeField(auto_now_add=True)
